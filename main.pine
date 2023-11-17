@@ -1,5 +1,5 @@
 //@version=5
-indicator(""Money_printing_strat [KY_SMC]", "Money_printing_strat [KY_SMC]"
+indicator("KY_SMC_INDICATOR"
   , overlay = true
   , max_labels_count = 500
   , max_lines_count = 500
@@ -20,6 +20,7 @@ string SHOW_SWING            = 'Display swing market Structure'
 string SHOW_SWING_POINTS     = 'Display swing point as labels on the chart'
 string SHOW_SWHL_POINTS      = 'Highlight most recent strong and weak high/low points on the chart'
 string INTERNAL_OB           = 'Display internal order blocks on the chart\n\nNumber of internal order blocks to display on the chart'
+string SWING_LENGTGH         = 'Determine fractal length'
 string SWING_OB              = 'Display swing order blocks on the chart\n\nNumber of internal swing blocks to display on the chart'
 string FILTER_OB             = 'Method used to filter out volatile order blocks \n\nIt is recommended to use the cumulative mean range method when a low amount of data is available'
 string SHOW_EQHL             = 'Display equal highs and equal lows on the chart'
@@ -56,6 +57,11 @@ show_trend = input(false, 'Color Candles'
 show_internals = input(true, 'Show Internal Structure'
   , group = 'Real Time Internal Structure'
   , tooltip = SHOW_INTERNAL)
+
+swing_length = input.int(5, 'Swing Length'
+  , minval = 2
+  , inline = 'swing_value'
+  , group = 'Real Time Internal Structure')
 
 show_ibull = input.string('All', 'Bullish Structure'
   , options = ['All', 'BOS', 'CHoCH']
@@ -513,7 +519,7 @@ var eqhl_lbl_size = eq_size == 'Tiny'
 //Swings
 [top, btm] = swings(length)
 
-[itop, ibtm] = swings(5)
+[itop, ibtm] = swings(swing_length)
 
 //-----------------------------------------------------------------------------}
 //Pivot High
@@ -555,7 +561,7 @@ if itop
     itop_cross := true
 
     itop_y := itop
-    itop_x := n - 5
+    itop_x := n - swing_length
 
 //Trailing maximum
 trail_up := math.max(high, trail_up)
@@ -610,7 +616,7 @@ if ibtm
     ibtm_cross := true
 
     ibtm_y := ibtm
-    ibtm_x := n - 5
+    ibtm_x := n - swing_length
 
 //Trailing minimum
 trail_dn := math.min(low, trail_dn)
