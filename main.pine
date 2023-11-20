@@ -1117,6 +1117,27 @@ ict_SimpleMarketStructure(array<label> stH, array<label> stL, bool showST,
                        "low")
 
 //#endregion
+
+
+
+//#region[Logic]
+var label[] stHigh = array.new<label>()
+var label[] itHigh = array.new<label>()
+var label[] ltHigh = array.new<label>()
+
+var label[] stLow = array.new<label>()
+var label[] itLow = array.new<label>()
+var label[] ltLow = array.new<label>()
+
+var showShort = mt_structure ? _showST : 0
+var showIntermediate = mt_structure ? _showIT : 0
+var showLong = mt_structure ? _showLT : 0
+ict_SimpleMarketStructure(stHigh, stLow, showShort,
+                          itHigh, itLow, showIntermediate,
+                          ltHigh, ltLow, showLong)
+//#endregion
+  
+
 //-----------------------------------------------------------------------------}
 //Trend
 //-----------------------------------------------------------------------------{
