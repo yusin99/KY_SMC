@@ -1040,6 +1040,83 @@ if barstate.islast and show_sd
 //#region[Global]
 colorLBL = input.color(color.black, title = "Label Color")
 //#endregion
+
+
+
+//#region[Functions and Methods]
+method oldSwing(array<label> a, type) =>
+    if type == "high"
+        label.get_y(a.get(a.size()-1)) < label.get_y(a.get(a.size()-2)) and
+         label.get_y(a.get(a.size()-2)) > label.get_y(a.get(a.size()-3))
+
+    else if type == 'low'
+        label.get_y(a.get(a.size()-1)) > label.get_y(a.get(a.size()-2)) and
+         label.get_y(a.get(a.size()-2)) < label.get_y(a.get(a.size()-3))
+
+         
+ict_SwingStructure(array<label> stA, bool showST,
+                   array<label> itA, bool showIT,
+                   array<label> ltA, bool showLT,
+                   type) =>
+    color cNONE = color.new(color.white, 100)
+    int swing   = na
+    float price = na
+    string _st  = na
+    string _it  = na
+    string _lt  = na
+    string lbl  = na
+
+    if type == "high"
+        swing := ta.highestbars(3)
+        price := high[1]
+        _st   := showST ? "." : na
+        _it   := showIT ? "△" : na
+        _lt   := showLT ? "▲" : na
+        lbl   := label.style_label_down
+    else if type == "low"
+        swing := ta.lowestbars(3)
+        price := low[1]
+        _st   := showST ? "." : na
+        _it   := showIT ? "▽" : na
+        _lt   := showLT ? "▼" : na
+        lbl   := label.style_label_up
+
+
+    if swing == -1
+        stA.push(label.new(bar_index-1, price, _st, yloc = yloc.price, color = cNONE, style = lbl, textcolor = colorLBL))
+
+    if stA.size() > 2
+        if stA.oldSwing(type)
+            it = label.copy(stA.get(stA.size()-2))
+            label.set_text(it, _it)
+            if not(itA.size() > 0)
+                itA.push(it)
+            else if label.get_y(itA.get(itA.size()-1)) != label.get_y(it)
+                itA.push(it)
+
+    if itA.size() > 2
+        if itA.oldSwing(type)
+            lt = label.copy(itA.get(itA.size()-2))
+            label.set_text(lt, _lt)
+            if not(ltA.size() > 0)
+                ltA.push(lt)
+            else if label.get_y(ltA.get(ltA.size()-1)) != label.get_y(lt)
+                ltA.push(lt)
+
+ict_SimpleMarketStructure(array<label> stH, array<label> stL, bool showST,
+                          array<label> itH, array<label> itL, bool showIT,
+                          array<label> ltH, array<label> ltL, bool showLT) =>
+    
+    ict_SwingStructure(stH, showST,
+                       itH, showIT,
+                       ltH, showLT,
+                       "high")
+    ict_SwingStructure(stL, showST,
+                       itL, showIT,
+                       ltL, showLT,
+                       "low")
+
+//#endregion
 //-----------------------------------------------------------------------------}
 //Trend
 //-----------------------------------------------------------------------------{
