@@ -42,6 +42,15 @@ mode = input.string('Historical'
   , group = 'Smart Money Concepts'
   , tooltip = MODE_TOOLTIP)
 
+mt_structure = input(false, 'Enable market structure'
+  , group = 'Market Structure'
+  , tooltip = '')
+
+//#region[Inputs]
+_showST = input.bool(true, title = "Show Short Term Swing Points", group = "Market Structure")
+_showIT = input.bool(true, title = "Show Intermediate Term Swing Points", group = "Market Structure")
+_showLT = input.bool(true, title = "Show Long Term Swing Points", group = "Market Structure")
+//#region
 style = input.string('Colored'
   , options = ['Colored', 'Monochrome']
   , group = 'Smart Money Concepts'
