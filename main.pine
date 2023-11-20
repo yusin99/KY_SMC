@@ -1032,6 +1032,14 @@ if barstate.islast and show_sd
     box.set_rightbottom(discount, n, trail_dn)
     label.set_xy(discount_lbl, int(math.avg(math.max(top_x, btm_x), n)), trail_dn)
 
+
+//-----------------------------------------------------------------------------}
+//Market structure
+//-----------------------------------------------------------------------------{
+
+//#region[Global]
+colorLBL = input.color(color.black, title = "Label Color")
+//#endregion
 //-----------------------------------------------------------------------------}
 //Trend
 //-----------------------------------------------------------------------------{
